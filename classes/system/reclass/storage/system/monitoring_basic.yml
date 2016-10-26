@@ -1,0 +1,14 @@
+parameters:
+  reclass:
+    storage:
+      node:
+        mon01.monitoring-basic.local:
+          name: mon01
+          domain: monitoring-basic.local
+          classes:
+          - system.linux.system.xenial
+          - system.influxdb.server.single
+          - system.grafana.server.single
+          params:
+            salt_master_host: ${_param:reclass_config_master}
+            single_address: 172.16.10.107

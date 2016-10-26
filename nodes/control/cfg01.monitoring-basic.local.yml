@@ -1,0 +1,42 @@
+classes:
+- service.git.client
+- system.linux.system.xenial
+- system.linux.system.repo.salt
+- system.openssh.client.lab
+- system.salt.master.git
+- system.reclass.storage.salt
+- system.reclass.storage.system.monitoring_basic
+- system.salt.minion.pki.authority
+- system.salt.minion.pki.certificate
+- system.sphinx.server.doc.reclass
+- system.nginx.server.single
+- system.nginx.server.proxy.grafana_web
+- system.nginx.server.proxy.graphite_web
+parameters:
+  _param:
+    salt_master_environment_repository: "https://github.com/tcpcloud"
+    salt_master_environment_revision: master
+    reclass_data_repository: "git@github.com:Mirantis/mk-lab-salt-model.git"
+    reclass_data_revision: monitoring
+    reclass_config_master: 192.168.10.100
+    single_address: 172.16.10.100
+    salt_master_host: 127.0.0.1
+    salt_master_base_environment: dev
+    salt_minion_ca_host: cfg01.monitoring-basic.local
+    cluster_public_host: 185.22.97.201
+  linux:
+    system:
+      name: cfg01
+      domain: monitoring-basic.local
+    network:
+      host:
+        cfg01:
+          address: 172.16.10.100
+          names:
+          - cfg01
+          - cfg01.monitoring-basic.local
+        mon01:
+          address: 172.16.10.107
+          names:
+          - mon01
+          - mon01.monitoring-basic.local
