@@ -47,6 +47,24 @@ parameters:
             mysql_cluster_role: slave
             rabbitmq_cluster_role: slave
             opencontrail_database_id: 3
+        mtr01.mk20-lab-expert.local:
+          name: mtr01
+          domain: mk20-lab-expert.local
+          classes:
+          - system.linux.system.trusty
+          - system.horizon.server.cluster
+          params:
+            salt_master_host: ${_param:reclass_config_master}
+            single_address: 172.16.10.115
+        prx01.mk20-lab-expert.local:
+          name: prx01
+          domain: mk20-lab-expert.local
+          classes:
+          - system.linux.system.trusty
+          - system.horizon.server.cluster
+          params:
+            salt_master_host: ${_param:reclass_config_master}
+            single_address: 172.16.10.121
         cmp01.mk20-lab-expert.local:
           name: cmp01
           domain: mk20-lab-expert.local
