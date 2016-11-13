@@ -23,7 +23,7 @@ classes:
 - cluster.mk22_lab_basic
 parameters:
   _param:
-    keepalived_vip_interface: eth1
+    keepalived_vip_interface: weave
   linux:
     system:
       package:
@@ -31,10 +31,10 @@ parameters:
           version: latest
     network:
       interface:
-        eth1:
+        weave:
           enabled: true
           type: eth
-          proto: dhcp
+          proto: manual
   keepalived:
     cluster:
       instance:

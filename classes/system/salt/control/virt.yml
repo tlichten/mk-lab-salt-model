@@ -8,10 +8,10 @@ parameters:
   virt:
     nic:
       default:
-        eth1:
+        weave:
           bridge: br0
           model: virtio
-        eth0:
+        bond0:
           bridge: br1
           model: virtio
     disk:

@@ -8,11 +8,11 @@ parameters:
   _param:
     opencontrail_compute_gateway: 172.16.10.1
     opencontrail_compute_address: ${_param:single_address}
-    opencontrail_compute_iface: eth1
+    opencontrail_compute_iface: weave
   linux:
     network:
       interface:
-        eth1:
+        weave:
           enabled: true
           type: eth
           proto: manual
@@ -25,7 +25,7 @@ parameters:
           pre_up_cmds:
           - /usr/lib/contrail/if-vhost0
           use_interfaces:
-          - eth1
+          - weave
   nova:
     compute:
       vncproxy_url: http://${_param:cluster_vip_address}:6080

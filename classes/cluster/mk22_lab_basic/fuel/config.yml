@@ -27,10 +27,10 @@ parameters:
   linux:
     network:
       interface:
-        ens4:
+        weave:
           enabled: true
           type: eth
-          proto: dhcp
+          proto: manual
   reclass:
     storage:
       node:
