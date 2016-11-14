@@ -9,10 +9,10 @@ salt -C 'I@keystone:server' cmd.run ". /root/keystonerc; keystone service-list"
 # Install glance and ensure glusterfs clusters
 salt -C 'I@glance:server' state.sls glance -b 1
 salt -C 'I@glance:server' state.sls glusterfs.client
-salt -C 'I@keystone:server' cmd.run ". /root/keystonerc; glance image-list"
-
 # Update fernet tokens
 salt -C 'I@keystone:server' state.sls keystone.server
+
+salt -C 'I@keystone:server' cmd.run ". /root/keystonerc; glance image-list"
 
 # Install nova service
 salt -C 'I@nova:controller' state.sls nova -b 1
