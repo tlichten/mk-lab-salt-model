@@ -14,37 +14,37 @@ salt 'ctl03*' cmd.run "/usr/share/contrail-utils/provision_control.py --api_serv
 
 salt 'ctl01*' cmd.run "/usr/share/contrail-utils/provision_vrouter.py --host_name cmp01 --host_ip 172.16.10.105 --api_server_ip 172.16.10.254 --oper add --admin_user admin --admin_password workshop --admin_tenant_name admin"
 
-salt 'ctl01*' cmd.run "source /root/keystonerc; neutron net-create INET --router:external"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron net-create INET --router:external"
 
-salt 'ctl01*' cmd.run "source /root/keystonerc; neutron subnet-create --gateway 192.168.150.1 --disable-dhcp --name subext INET 192.168.150.0/24"
-salt 'ctl01*' cmd.run "source /root/keystonerc; neutron net-create net1"
-salt 'ctl01*' cmd.run "source /root/keystonerc; neutron subnet-create --name subnet1 net1 192.168.32.0/24"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron subnet-create --gateway 192.168.150.1 --disable-dhcp --name subext INET 192.168.150.0/24"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron net-create net1"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron subnet-create --name subnet1 net1 192.168.32.0/24"
 
-salt 'cmp01*' cmd.run "python /usr/share/contrail-utils/provision_vgw_interface.py --oper create --interface vgw1 --subnets 192.168.150.0/24 --routes 0.0.0.0/0 --vrf default-domain:admin:INET:INET"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron router-create router1"
 
-salt 'ctl01*' cmd.run "source /root/keystonerc; neutron router-create router1"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron router-interface-add router1 subnet1"
 
-salt 'ctl01*' cmd.run "source /root/keystonerc; neutron router-interface-add router1 subnet1"
-
-salt 'ctl01*' cmd.run "source /root/keystonerc; neutron router-gateway-set router1 INET"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron router-gateway-set router1 INET"
 
 salt 'ctl01*' cmd.run "python /usr/share/contrail-utils/provision_linklocal.py --api_server_ip 172.16.10.254 --api_server_port 8082 --admin_user admin --admin_password workshop --admin_tenant_name admin --linklocal_service_name metadata --linklocal_service_ip 169.254.169.254 --linklocal_service_port 80 --ipfabric_service_ip 172.16.10.254 --ipfabric_service_port 8776"
 
-salt 'ctl01*' cmd.run "source /root/keystonerc; nova secgroup-add-rule --direction egress default tcp 22 22 0.0.0.0/0"
-salt 'ctl01*' cmd.run "source /root/keystonerc; nova secgroup-add-rule --direction ingress default tcp 22 22 0.0.0.0/0"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron security-group-rule-create --direction ingress --ethertype IPv4 --protocol tcp --port-range-min 22 --port-range-max 22 default"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron security-group-rule-create --direction egress --ethertype IPv4 --protocol tcp --port-range-min 22 --port-range-max 22 default"
 
-salt 'ctl01*' cmd.run "source /root/keystonerc; nova secgroup-add-rule --direction egress default icmp -1 -1 0.0.0.0/0"
-salt 'ctl01*' cmd.run "source /root/keystonerc; nova secgroup-add-rule --direction ingress default icmp -1 -1 0.0.0.0/0"
-
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron security-group-rule-create --direction ingress --ethertype IPv4 --protocol icmp default"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron security-group-rule-create --direction egress --ethertype IPv4 --protocol icmp default"
 
 salt 'ctl01*' cmd.run "wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-i386-disk.img"
-salt 'ctl01*' cmd.run "source /root/keystonerc; glance image-create --name cirros --visibility public --disk-format qcow2 --container-format bare --progress < /root/cirros-0.3.4-i386-disk.img"
+salt 'ctl01*' cmd.run ". /root/keystonerc; glance image-create --name cirros --visibility public --disk-format qcow2 --container-format bare --progress < /root/cirros-0.3.4-i386-disk.img"
 
-salt 'ctl01*' cmd.run "source /root/keystonerc; nova boot --flavor m1.tiny --image cirros --nic net-name=net1 instance01.workshop.cloudlab.cz"
+salt 'ctl01*' cmd.run ". /root/keystonerc; neutron floatingip-create INET"
 
-salt 'ctl01*' cmd.run "source /root/keystonerc; neutron floatingip-create INET"
-
-salt 'ctl01*' cmd.run "source /root/keystonerc; nova floating-ip-associate instance01.workshop.cloudlab.cz 192.168.150.5"
+salt 'ctl01*' cmd.run ". /root/keystonerc; nova floating-ip-associate instance01.workshop.cloudlab.cz 192.168.150.6"
 salt -C '* and not cmp*' cmd.run "ip route add 192.168.150.0/24 via 172.16.10.105 dev weave"
 
 salt "cmp*" system.reboot
+
+
+#salt 'cmp01*' cmd.run "python /usr/share/contrail-utils/provision_vgw_interface.py --oper create --interface vgw1 --subnets 192.168.150.0/24 --routes 0.0.0.0/0 --vrf default-domain:admin:INET:INET"
+#salt 'ctl01*' cmd.run ". /root/keystonerc; nova boot --flavor m1.tiny --image cirros --nic net-name=net1 instance01.workshop.cloudlab.cz"
+
