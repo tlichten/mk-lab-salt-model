@@ -39,7 +39,6 @@ salt 'ctl01*' cmd.run ". /root/keystonerc; glance image-create --name cirros --v
 
 salt 'ctl01*' cmd.run ". /root/keystonerc; neutron floatingip-create INET"
 
-salt 'ctl01*' cmd.run ". /root/keystonerc; nova floating-ip-associate instance01.workshop.cloudlab.cz 192.168.150.6"
 salt -C '* and not cmp*' cmd.run "ip route add 192.168.150.0/24 via 172.16.10.105 dev weave"
 
 salt "cmp*" system.reboot
