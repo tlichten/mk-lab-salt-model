@@ -26,6 +26,10 @@ salt 'ctl01*' cmd.run "source /root/keystonerc; neutron router-create router1"
 
 salt 'ctl01*' cmd.run "source /root/keystonerc; neutron router-interface-add router1 subnet1"
 
+salt 'ctl01*' cmd.run "source /root/keystonerc; neutron router-gateway-set router1 INET"
+
+salt 'ctl01*' cmd.run "python /usr/share/contrail-utils/provision_linklocal.py --api_server_ip 172.16.10.254 --api_server_port 8082 --admin_user admin --admin_password workshop --admin_tenant_name admin --linklocal_service_name metadata --linklocal_service_ip 169.254.169.254 --linklocal_service_port 80 --ipfabric_service_ip 172.16.10.254 --ipfabric_service_port 8776"
+
 salt 'ctl01*' cmd.run "source /root/keystonerc; nova secgroup-add-rule --direction egress default tcp 22 22 0.0.0.0/0"
 salt 'ctl01*' cmd.run "source /root/keystonerc; nova secgroup-add-rule --direction ingress default tcp 22 22 0.0.0.0/0"
 
