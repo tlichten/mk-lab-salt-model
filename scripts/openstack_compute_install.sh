@@ -5,4 +5,6 @@ salt "cmp*" state.apply
 salt "cmp*" state.apply
 
 # Reboot compute nodes
-#salt "cmp*" system.reboot
+echo "Rebooting compute nodes ..."
+
+salt "cmp*" system.reboot
