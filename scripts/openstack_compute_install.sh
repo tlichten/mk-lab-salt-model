@@ -46,4 +46,4 @@ salt 'ctl01*' cmd.run ". /root/keystonerc; neutron floatingip-create INET"
 salt -C '* and not cmp*' cmd.run "ip route add 192.168.150.0/24 via 172.16.10.105 dev weave"
 
 salt 'ctl01*' cmd.run ". /root/keystonerc; nova boot --flavor m1.tiny --image cirros --nic net-name=net1 instance01.workshop.cloudlab.cz"
-salt 'ctl01*' cmd.run ". /root/keystonerc; nova floating-ip-associate instance01.workshop.cloudlab.cz 192.168.150.6"
+salt 'ctl01*' cmd.run ". /root/keystonerc; ip=\$(nova floating-ip-list | grep '192.168.150' | awk '{ print \$4 }');  nova floating-ip-associate instance01.workshop.cloudlab.cz \$ip"
