@@ -46,4 +46,4 @@ salt "cmp*" system.reboot
 
 #salt 'cmp01*' cmd.run "python /usr/share/contrail-utils/provision_vgw_interface.py --oper create --interface vgw1 --subnets 192.168.150.0/24 --routes 0.0.0.0/0 --vrf default-domain:admin:INET:INET"
 #salt 'ctl01*' cmd.run ". /root/keystonerc; nova boot --flavor m1.tiny --image cirros --nic net-name=net1 instance01.workshop.cloudlab.cz"
-
+#salt 'ctl01*' cmd.run ". /root/keystonerc; nova floating-ip-associate instance01.workshop.cloudlab.cz 192.168.150.6"
