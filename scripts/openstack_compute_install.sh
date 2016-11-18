@@ -18,6 +18,8 @@ salt 'ctl01*' cmd.run "/usr/share/contrail-utils/provision_vrouter.py --host_nam
 
 salt 'cmp01*' cmd.run "python /usr/share/contrail-utils/provision_vgw_interface.py --oper create --interface vgw1 --subnets 192.168.150.0/24 --routes 0.0.0.0/0 --vrf default-domain:admin:INET:INET"
 
+salt 'cmp01*' cmd.run "/sbin/iptables -t nat -A POSTROUTING -j MASQUERADE"
+
 salt 'ctl01*' cmd.run ". /root/keystonerc; neutron net-create INET --router:external"
 
 salt 'ctl01*' cmd.run ". /root/keystonerc; neutron subnet-create --gateway 192.168.150.1 --disable-dhcp --name subext INET 192.168.150.0/24"
